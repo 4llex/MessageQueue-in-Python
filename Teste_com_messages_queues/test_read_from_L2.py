@@ -17,28 +17,19 @@ def main():
 
     mq_rx = posix_ipc.MessageQueue("/mqControlToPhy", posix_ipc.O_CREAT )
     mq_tx = posix_ipc.MessageQueue("/mqControlFromPhy", posix_ipc.O_CREAT )
-    cprint(' ===> Waiting for L2 layer command! ', 'yellow')
-    
+    cprint(' ===> Reading L2 msg! ', 'yellow')
+    cont = 0;
 
     while True:
         
-        data = mq_rx.receive()
-        cprint('    %s' %(datetime.now()), 'blue')	#datetime.now().strftime('%H:%M:%S')
+        data = mq_rx.receive()        
         cprint('    MAC->PHY: %s (%s)' %(data[0], data[0].encode('hex')), 'red')
-        
-        if data[0] == 'A':
-            mq_tx.send('AA')
-            print('PHY->MAC: AA')
-
-        #mq_tx.send('F')
-        #print('PHY->MAC: F')
-        #time.sleep(4.6e-3)
-
-        while True:
-             mq_tx.send('F')
-             #print('PHY -> MAC: F')
-             time.sleep(4.6e-3)
-
+	cont = cont + 1;
+        #if cont == 5:
+	#	mq_tx.send('AA')
+	if data[0] == 'A':
+		mq_tx.send('AA')
+	cprint('reading buffer', 'blue')
 
 if __name__ == "__main__":
     main()

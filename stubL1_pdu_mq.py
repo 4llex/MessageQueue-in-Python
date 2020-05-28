@@ -8,14 +8,19 @@
 import json
 import posix_ipc    # pip install posix_ipc
 import time
+from termcolor import cprint # sudo apt-get install -y python-termcolor
+from datetime import datetime
 
 def main():
     mq_rx = posix_ipc.MessageQueue("/mqPduToPhy", posix_ipc.O_CREAT )
+    cprint(' ===> Waiting PDUs from MAC layer! ', 'yellow')
     # 
     while True:
         
         data = mq_rx.receive()
-        print('MAC->PHY: %s' %data[0].encode('hex'))
+        cprint('%s' %(datetime.now()), 'blue')
+        cprint('MAC->PHY: %s' %data[0].encode('hex'), 'red')
+        print (' ')
         
         
 

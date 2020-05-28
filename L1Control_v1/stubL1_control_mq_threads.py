@@ -10,35 +10,43 @@ import posix_ipc              # pip install posix_ipc
 import time
 from termcolor import cprint  # sudo apt-get install -y python-termcolor
 from datetime import datetime
+import threading
 
+
+
+def send_ff():
+    mq_tx = posix_ipc.MessageQueue("/mqControlFromPhy", posix_ipc.O_CREAT )
+    mq_tx.send('AA')
+    print('PHY->MAC: AA')
+    while True:
+        mq_tx.send('F')
+        #print('PHY -> MAC: F')
+        time.sleep(4.6e-3)
+        #time.sleep(1)
 
 
 def main():
 
+    flag = 0
     mq_rx = posix_ipc.MessageQueue("/mqControlToPhy", posix_ipc.O_CREAT )
-    mq_tx = posix_ipc.MessageQueue("/mqControlFromPhy", posix_ipc.O_CREAT )
     cprint(' ===> Waiting for L2 layer command! ', 'yellow')
-    
 
     while True:
         
+        print('Inicio')
         data = mq_rx.receive()
-        cprint('    %s' %(datetime.now()), 'blue')	#datetime.now().strftime('%H:%M:%S')
+        cprint('    %s' %(datetime.now()), 'blue')
         cprint('    MAC->PHY: %s (%s)' %(data[0], data[0].encode('hex')), 'red')
         
         if data[0] == 'A':
-            mq_tx.send('AA')
-            print('PHY->MAC: AA')
-
-        #mq_tx.send('F')
-        #print('PHY->MAC: F')
-        #time.sleep(4.6e-3)
-
-        while True:
-             mq_tx.send('F')
-             #print('PHY -> MAC: F')
-             time.sleep(4.6e-3)
-
+            if flag==0:
+                #flag = 1
+                t1 = threading.Thread(target=send_ff)
+                t1.start()
+            
+        
 
 if __name__ == "__main__":
     main()
+
+    
