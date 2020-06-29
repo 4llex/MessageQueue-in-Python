@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<block>
+  <name>L1L2 Integration</name>
+  <key>inatel5g_l1l2_integration</key>
+  <category>[inatel5g]</category>
+  <import>import inatel5g</import>
+  <make>inatel5g.l1l2_integration($msq_queue_01, $msq_queue_02, $msq_queue_03, $msq_queue_04)</make>
+  
+  <!-- Parameters Declaration -->
+  <param>
+    <name>Queue control RX</name>
+    <key>msq_queue_01</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Queue control TX</name>
+    <key>msq_queue_02</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Queue PDU RX</name>
+    <key>msq_queue_03</key>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Queue PDU TX</name>
+    <key>msq_queue_04</key>
+    <type>string</type>
+  </param>
+
+  <!-- Ports Declaration -->
+  <sink>
+    <name>in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <source>
+    <name>pdus</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  
+</block>

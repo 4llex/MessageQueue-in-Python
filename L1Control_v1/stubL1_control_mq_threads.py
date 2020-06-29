@@ -33,7 +33,7 @@ def main():
 
     while True:
         
-        print('Inicio')
+        #print('Inicio')
         data = mq_rx.receive()
         cprint('    %s' %(datetime.now()), 'blue')
         cprint('    MAC->PHY: %s (%s)' %(data[0], data[0].encode('hex')), 'red')
